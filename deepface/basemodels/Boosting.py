@@ -10,10 +10,11 @@ from deepface.commons import functions, distance as dst
 def loadModel():
 	
 	model_names = ['VGG-Face', 'Facenet', 'OpenFace', 'DeepFace']
+	model_names = ["InsightFace","VGG-Face", "Facenet512", "OpenFace", "ArcFace"]
 
 	model = {}
 	
-	model_pbar = tqdm(range(0, 4), desc='Face recognition models')
+	model_pbar = tqdm(range(0, 5), desc='Face recognition models')
 	
 	for index in model_pbar:
 		
@@ -29,13 +30,13 @@ def validate_model(model):
 	found_models = []
 	for key, value in model.items():
 		found_models.append(key)
-	
-	if ('VGG-Face' in found_models) and ('Facenet' in found_models) and ('OpenFace' in found_models) and ('DeepFace' in found_models):
+	# ["InsightFace","VGG-Face", "Facenet512", "OpenFace", "ArcFace"]
+	if ('VGG-Face' in found_models) and ('Facenet512' in found_models) and ('OpenFace' in found_models) and ('ArcFace' in found_models ) and ('InsightFace' in found_models ):
 		#print("Ensemble learning will be applied for ", found_models," models")
 		valid = True
 	else:
 		
-		missing_ones = set(['VGG-Face', 'Facenet', 'OpenFace', 'DeepFace']) - set(found_models)
+		missing_ones = set(['VGG-Face', 'Facenet512', 'OpenFace', 'ArcFace','InsightFace']) - set(found_models)
 		
 		raise ValueError("You'd like to apply ensemble method and pass pre-built models but models must contain [VGG-Face, Facenet, OpenFace, DeepFace] but you passed "+str(found_models)+". So, you need to pass "+str(missing_ones)+" models as well.")
 
@@ -52,7 +53,7 @@ def build_gbm():
 		output = home+'/.deepface/weights/face-recognition-ensemble-model.txt'
 		gdown.download(url, output, quiet=False)
 		
-	ensemble_model_path = home+'/.deepface/weights/face-recognition-ensemble-model.txt'
+	ensemble_model_path ="/home/quang/Documents/FACE/deepface/face-recognition-ensemble-model_InsightFace_version1.txt"
 	
 	deepface_ensemble = lgb.Booster(model_file = ensemble_model_path)
 	

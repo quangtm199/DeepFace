@@ -3,7 +3,8 @@ from PIL import Image
 import math
 import numpy as np
 from deepface.commons import distance
-
+import torch
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 def build_model(detector_backend):
 
     global face_detector_obj #singleton design pattern

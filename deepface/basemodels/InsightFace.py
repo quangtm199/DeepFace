@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 from torch import nn
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 from deepface.backbones.iresnet import iresnet18, iresnet34, iresnet50, iresnet100, iresnet200
 from deepface.backbones.mobilefacenet import get_mbf
 from deepface.commons import functions
@@ -46,7 +48,7 @@ class Model_ArcFace(nn.Module):
     def __init__(self,name,weight):
         super().__init__()
         self.model= getmodel(name, fp16=False)
-        self.model.load_state_dict(torch.load(weight, map_location=torch.device("cpu") ))
+        self.model.load_state_dict(torch.load(weight, map_location=device ))
         self.model.eval()
     @torch.no_grad()
     def predict(self,image):
@@ -131,9 +133,7 @@ def loadModel(name):
 #     img2_graph = np.array(img2_graph)
 #     distance_graph = np.array(distance_graph)
 
-#     #----------------------------------------------
-#     #plotting
-
+#     #----------------------------------Just updated the thresholds. Clone the source code to have the latest one. I'm going to publish it in pip in the next release.
 #     fig = plt.figure()
 
 #     ax1 = fig.add_subplot(3,2,1)
